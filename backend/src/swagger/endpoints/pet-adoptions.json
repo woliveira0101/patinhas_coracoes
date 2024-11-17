@@ -1,0 +1,71 @@
+{
+  "/pets/{pet_id}/adoptions": {
+    "parameters": [
+      {
+        "name": "pet_id",
+        "in": "path",
+        "required": true,
+        "description": "ID do pet",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Lista solicitações de adoção do pet",
+      "tags": ["Pet Adoptions"],
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "$ref": "#/components/schemas/PaginationQuery"
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Filtrar por status",
+          "schema": {
+            "type": "string",
+            "enum": ["aprovado", "reprovado", "pendente", "cancelado"]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Lista de solicitações retornada com sucesso"
+        }
+      }
+    }
+  },
+  "/pets/{pet_id}/adoptions/{adoption_id}": {
+    "parameters": [
+      {
+        "name": "pet_id",
+        "in": "path",
+        "required": true,
+        "description": "ID do pet",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      {
+        "name": "adoption_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da adoção",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Retorna detalhes da adoção",
+      "tags": ["Pet Adoptions"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Detalhes da adoção retornados com sucesso"
+        }
+      }
+    }
+  }
+}

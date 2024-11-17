@@ -1,0 +1,603 @@
+{
+  "/users": {
+    "get": {
+      "summary": "Lista todos os usuários",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "$ref": "#/components/schemas/PaginationQuery"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Lista de usuários retornada com sucesso"
+        }
+      }
+    },
+    "post": {
+      "summary": "Criar novo usuário",
+      "tags": ["Users"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Nome completo do usuário"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email do usuário"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "description": "Número de telefone"
+                },
+                "login": {
+                  "type": "string",
+                  "description": "Nome de usuário para login"
+                },
+                "password": {
+                  "type": "string",
+                  "description": "Senha"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Tipo de usuário",
+                  "enum": ["doador", "adotante", "ambos"]
+                }
+              },
+              "required": ["name", "email", "phone_number", "login", "password", "type"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Usuário criado com sucesso"
+        }
+      }
+    }
+  },
+  "/users/me": {
+    "get": {
+      "summary": "Retorna dados do usuário autenticado",
+      "description": "Retorna os dados do usuário atual baseado no token JWT fornecido no header Authorization. Use o formato: Bearer {token}",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Dados do usuário retornados com sucesso",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer",
+                        "description": "ID do usuário"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Nome completo do usuário"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Email do usuário"
+                      },
+                      "phone_number": {
+                        "type": "string",
+                        "description": "Número de telefone"
+                      },
+                      "login": {
+                        "type": "string",
+                        "description": "Nome de usuário"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Tipo de usuário",
+                        "enum": ["doador", "adotante", "ambos"]
+                      },
+                      "addresses": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "city_name": {
+                              "type": "string",
+                              "description": "Nome da cidade"
+                            },
+                            "state_name": {
+                              "type": "string",
+                              "description": "Nome do estado"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Não autorizado - Token ausente ou inválido",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid authorization header format. Use Bearer {token}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Usuário não encontrado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Erro interno do servidor",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Internal server error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "summary": "Atualiza dados do usuário autenticado",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Nome completo do usuário"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email do usuário"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "description": "Número de telefone"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Dados atualizados com sucesso"
+        }
+      }
+    }
+  },
+  "/users/me/password": {
+    "put": {
+      "summary": "Alterar senha do usuário autenticado",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "current_password": {
+                  "type": "string",
+                  "description": "Senha atual"
+                },
+                "new_password": {
+                  "type": "string",
+                  "description": "Nova senha"
+                },
+                "new_password_confirmation": {
+                  "type": "string",
+                  "description": "Confirmação da nova senha"
+                }
+              },
+              "required": ["current_password", "new_password", "new_password_confirmation"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Senha alterada com sucesso",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Senha atualizada com sucesso"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Senha atual incorreta",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Senha atual incorreta"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Não autorizado - Token ausente ou inválido",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Invalid authorization header format. Use Bearer {token}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Usuário não encontrado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "User not found"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Erro interno do servidor",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Internal server error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/users/{user_id}": {
+    "parameters": [
+      {
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "description": "ID do usuário",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Retorna dados de um usuário específico",
+      "description": "Requer privilégios de administrador",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Dados do usuário retornados com sucesso"
+        },
+        "403": {
+          "description": "Acesso negado - Requer privilégios de administrador",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Access denied. Admin rights required."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "summary": "Atualiza dados de um usuário específico",
+      "description": "Requer privilégios de administrador",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Nome completo do usuário"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email do usuário"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "description": "Número de telefone"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Tipo de usuário",
+                  "enum": ["doador", "adotante", "ambos"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Dados atualizados com sucesso"
+        },
+        "403": {
+          "description": "Acesso negado - Requer privilégios de administrador",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Access denied. Admin rights required."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "summary": "Remove um usuário",
+      "description": "Requer privilégios de administrador",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "204": {
+          "description": "Usuário removido com sucesso"
+        },
+        "403": {
+          "description": "Acesso negado - Requer privilégios de administrador",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Access denied. Admin rights required."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/users/{user_id}/admin": {
+    "parameters": [
+      {
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "description": "ID do usuário",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "patch": {
+      "summary": "Promove um usuário a administrador",
+      "description": "Permite que um administrador existente promova outro usuário a administrador",
+      "tags": ["Users"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "is_admin": {
+                  "type": "boolean",
+                  "description": "Deve ser true para promover o usuário a administrador",
+                  "example": true
+                }
+              },
+              "required": ["is_admin"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Usuário promovido a administrador com sucesso",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "success"
+                  },
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer",
+                        "description": "ID do usuário"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Nome do usuário"
+                      },
+                      "is_admin": {
+                        "type": "boolean",
+                        "description": "Status de administrador",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Não autorizado - Token ausente ou inválido"
+        },
+        "403": {
+          "description": "Proibido - Usuário não é administrador",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "example": "error"
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "Access denied. Admin rights required."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Usuário não encontrado"
+        },
+        "500": {
+          "description": "Erro interno do servidor"
+        }
+      }
+    }
+  }
+}

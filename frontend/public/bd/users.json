@@ -1,0 +1,38 @@
+[
+  {
+    "id": "000001",
+    "name": "Eduardo Gineti",
+    "adress": "Rua Exemplo, 123",
+    "city": "Franca",
+    "state": "SP",
+    "cep": "14400-000",
+    "tel1": "16999999999",
+    "tel2": "16999999999",
+    "email": "edugineti@exemplo.com",
+    "password": "senha123"
+  },
+  {
+    "id": "000002",
+    "name": "Maria Silva",
+    "adress": "Avenida Principal, 456",
+    "city": "São Paulo",
+    "state": "SP",
+    "cep": "01000-000",
+    "tel1": "11988888888",
+    "tel2": "",
+    "email": "maria.silva@exemplo.com",
+    "password": "senha456"
+  },
+  {
+    "id": "000003",
+    "name": "João Oliveira",
+    "adress": "Rua das Flores, 789",
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "cep": "20000-000",
+    "tel1": "21977777777",
+    "tel2": "21977777778",
+    "email": "joao.oliveira@exemplo.com",
+    "password": "senha789"
+  }
+]

@@ -1,0 +1,265 @@
+{
+  "/questions": {
+    "get": {
+      "summary": "Lista todas as perguntas",
+      "tags": ["Questions"],
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "$ref": "#/components/schemas/PaginationQuery"
+        },
+        {
+          "name": "type",
+          "in": "query",
+          "description": "Filtrar por tipo de pergunta",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Lista de perguntas retornada com sucesso"
+        }
+      }
+    },
+    "post": {
+      "summary": "Adiciona nova pergunta",
+      "tags": ["Questions"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "question_content": {
+                  "type": "string",
+                  "description": "Conteúdo da pergunta"
+                },
+                "type_id": {
+                  "type": "integer",
+                  "description": "ID do tipo de pergunta"
+                },
+                "required": {
+                  "type": "boolean",
+                  "description": "Se a pergunta é obrigatória"
+                }
+              },
+              "required": ["question_content", "type_id"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Pergunta adicionada com sucesso"
+        }
+      }
+    }
+  },
+  "/questions/{question_id}": {
+    "parameters": [
+      {
+        "name": "question_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da pergunta",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Retorna detalhes",
+      "tags": ["Questions"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Detalhes da pergunta retornados com sucesso"
+        }
+      }
+    },
+    "put": {
+      "summary": "Atualiza pergunta",
+      "tags": ["Questions"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "question_content": {
+                  "type": "string",
+                  "description": "Conteúdo da pergunta"
+                },
+                "type_id": {
+                  "type": "integer",
+                  "description": "ID do tipo de pergunta"
+                },
+                "required": {
+                  "type": "boolean",
+                  "description": "Se a pergunta é obrigatória"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Pergunta atualizada com sucesso"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Remove pergunta",
+      "tags": ["Questions"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "204": {
+          "description": "Pergunta removida com sucesso"
+        }
+      }
+    }
+  },
+  "/questions/search": {
+    "get": {
+      "summary": "Pesquisar perguntas",
+      "tags": ["Questions"],
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "name": "q",
+          "in": "query",
+          "description": "Termo de busca",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "type",
+          "in": "query",
+          "description": "Filtrar por tipo",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Resultados da pesquisa retornados com sucesso"
+        }
+      }
+    }
+  },
+  "/questions/types": {
+    "get": {
+      "summary": "Lista tipos de perguntas",
+      "tags": ["Question Types"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Lista de tipos retornada com sucesso"
+        }
+      }
+    },
+    "post": {
+      "summary": "Adiciona novo tipo",
+      "tags": ["Question Types"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Nome do tipo de pergunta"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Descrição do tipo"
+                }
+              },
+              "required": ["name"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Tipo adicionado com sucesso"
+        }
+      }
+    }
+  },
+  "/questions/types/{type_id}": {
+    "parameters": [
+      {
+        "name": "type_id",
+        "in": "path",
+        "required": true,
+        "description": "ID do tipo",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Retorna detalhes",
+      "tags": ["Question Types"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Detalhes do tipo retornados com sucesso"
+        }
+      }
+    },
+    "put": {
+      "summary": "Atualiza tipo",
+      "tags": ["Question Types"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Nome do tipo de pergunta"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Descrição do tipo"
+                }
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Tipo atualizado com sucesso"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Remove tipo",
+      "tags": ["Question Types"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "204": {
+          "description": "Tipo removido com sucesso"
+        }
+      }
+    }
+  }
+}

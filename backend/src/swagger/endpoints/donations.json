@@ -1,0 +1,181 @@
+{
+  "/donations": {
+    "get": {
+      "summary": "Lista todas as doações",
+      "tags": ["Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "$ref": "#/components/schemas/PaginationQuery"
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "description": "Filtrar por status",
+          "schema": {
+            "type": "string",
+            "enum": ["pendente", "aprovado", "rejeitado"]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Lista de doações retornada com sucesso"
+        }
+      }
+    },
+    "post": {
+      "summary": "Registra nova doação",
+      "tags": ["Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "integer",
+                  "description": "ID do usuário doador"
+                },
+                "pet_id": {
+                  "type": "integer",
+                  "description": "ID do animal associado à doação"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "Valor da doação"
+                },
+                "payment_method": {
+                  "type": "string",
+                  "description": "Método de pagamento",
+                  "enum": ["pix", "credito", "debito"]
+                }
+              },
+              "required": ["user_id", "pet_id", "amount", "payment_method"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Doação registrada com sucesso"
+        }
+      }
+    }
+  },
+  "/donations/pending": {
+    "get": {
+      "summary": "Listar doações pendentes",
+      "tags": ["Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "$ref": "#/components/schemas/PaginationQuery"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Lista de doações pendentes retornada com sucesso"
+        }
+      }
+    }
+  },
+  "/donations/{donation_id}": {
+    "parameters": [
+      {
+        "name": "donation_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da doação",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Retorna detalhes",
+      "tags": ["Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Detalhes da doação retornados com sucesso"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Remove doação",
+      "tags": ["Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "204": {
+          "description": "Doação removida com sucesso"
+        }
+      }
+    }
+  },
+  "/donations/{donation_id}/approve": {
+    "parameters": [
+      {
+        "name": "donation_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da doação",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "post": {
+      "summary": "Aprova doação",
+      "tags": ["Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Doação aprovada com sucesso"
+        }
+      }
+    }
+  },
+  "/donations/{donation_id}/reject": {
+    "parameters": [
+      {
+        "name": "donation_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da doação",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "post": {
+      "summary": "Rejeita doação",
+      "tags": ["Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "description": "Motivo da rejeição"
+                }
+              },
+              "required": ["reason"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Doação rejeitada com sucesso"
+        }
+      }
+    }
+  }
+}

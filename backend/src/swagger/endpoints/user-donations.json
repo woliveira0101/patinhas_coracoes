@@ -1,0 +1,108 @@
+{
+  "/users/{user_id}/donations": {
+    "parameters": [
+      {
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "description": "ID do usuário",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Lista doações do usuário",
+      "tags": ["User Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "parameters": [
+        {
+          "$ref": "#/components/schemas/PaginationQuery"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Lista de doações retornada com sucesso"
+        }
+      }
+    },
+    "post": {
+      "summary": "Registra nova doação",
+      "tags": ["User Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pet_id": {
+                  "type": "integer",
+                  "description": "ID do pet beneficiado"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "Valor da doação"
+                },
+                "payment_method": {
+                  "type": "string",
+                  "description": "Método de pagamento",
+                  "enum": ["pix", "credito", "debito"]
+                }
+              },
+              "required": ["pet_id", "amount", "payment_method"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Doação registrada com sucesso"
+        }
+      }
+    }
+  },
+  "/users/{user_id}/donations/{donation_id}": {
+    "parameters": [
+      {
+        "name": "user_id",
+        "in": "path",
+        "required": true,
+        "description": "ID do usuário",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      {
+        "name": "donation_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da doação",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Retorna detalhes da doação",
+      "tags": ["User Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Detalhes da doação retornados com sucesso"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Remove registro de doação",
+      "tags": ["User Donations"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "204": {
+          "description": "Registro de doação removido com sucesso"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "/adoptions/{adoption_id}/answers": {
+    "parameters": [
+      {
+        "name": "adoption_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da adoção",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Lista respostas da adoção",
+      "tags": ["Adoption Answers"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Lista de respostas retornada com sucesso"
+        }
+      }
+    },
+    "post": {
+      "summary": "Submete respostas",
+      "tags": ["Adoption Answers"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answers": {
+                  "type": "array",
+                  "description": "Lista de respostas",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "question_id": {
+                        "type": "integer",
+                        "description": "ID da pergunta"
+                      },
+                      "answer_content": {
+                        "type": "string",
+                        "description": "Conteúdo da resposta"
+                      }
+                    },
+                    "required": ["question_id", "answer_content"]
+                  }
+                }
+              },
+              "required": ["answers"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Respostas submetidas com sucesso"
+        }
+      }
+    }
+  },
+  "/adoptions/{adoption_id}/answers/{answer_id}": {
+    "parameters": [
+      {
+        "name": "adoption_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da adoção",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      {
+        "name": "answer_id",
+        "in": "path",
+        "required": true,
+        "description": "ID da resposta",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    ],
+    "get": {
+      "summary": "Retorna detalhes da resposta",
+      "tags": ["Adoption Answers"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "200": {
+          "description": "Detalhes da resposta retornados com sucesso"
+        }
+      }
+    },
+    "put": {
+      "summary": "Atualiza resposta",
+      "tags": ["Adoption Answers"],
+      "security": [{ "bearerAuth": [] }],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answer_content": {
+                  "type": "string",
+                  "description": "Novo conteúdo da resposta"
+                }
+              },
+              "required": ["answer_content"]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Resposta atualizada com sucesso"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Remove resposta",
+      "tags": ["Adoption Answers"],
+      "security": [{ "bearerAuth": [] }],
+      "responses": {
+        "204": {
+          "description": "Resposta removida com sucesso"
+        }
+      }
+    }
+  }
+}

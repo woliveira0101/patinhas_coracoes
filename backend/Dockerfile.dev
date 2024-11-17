@@ -1,0 +1,17 @@
+FROM node:14
+
+WORKDIR /usr/src/app
+
+# Install netcat for database connection check
+RUN apt-get update && apt-get install -y netcat && rm -rf /var/lib/apt/lists/*
+
+COPY package*.json ./
+
+RUN npm install
+
+# O código será montado como volume no docker-compose
+# para permitir hot-reload em desenvolvimento
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
